@@ -55,3 +55,5 @@ st.dataframe(df)
 st.subheader('表の表⽰')
 st.table(df)
 
+
+
