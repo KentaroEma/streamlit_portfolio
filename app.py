@@ -218,7 +218,7 @@ ttl = 1
 
 @st.cache_data(ttl=ttl)
 def get_current_time():
- return pd.Timestamp.now()
+    return pd.Timestamp.now()
 st.subheader("キャッシュの無効化")
 st.write(f"現在時刻（{ttl}秒ごとに更新）:")
 st.write(get_current_time())
