@@ -3,6 +3,9 @@ import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
 import time
+import io
+import openpyxl
+
 
 
 st.title('StreamlitによるApp')
