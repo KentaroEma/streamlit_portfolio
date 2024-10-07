@@ -282,9 +282,9 @@ if col3.button('リセット', key='reset_count'):
 st.write(f"現在のカウント: {st.session_state.counter}")
 
 column_options = st.multiselect(
-    '表⽰する列を選択してください',
-    ['X', 'Y', 'Z'],
-    ['X', 'Y', 'Z'],
+    label='表⽰する列を選択してください',
+    options=['X', 'Y', 'Z'],
+    default=['X', 'Y', 'Z'],
     key='column_selection'
     )
 sample_data = pd.DataFrame(np.random.randn(10, 3), columns=['X', 'Y', 'Z'])
