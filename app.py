@@ -214,13 +214,12 @@ st.write(f"⼤規模データセット読み込み時間: {end_time - start_time
 st.write(f"データセットの形状: {large_data.shape}")
 st.write(large_data.head())
 
-ttl = 10
 
-@st.cache_data(ttl=ttl)
+@st.cache_data(ttl=10)
 def get_current_time():
     return pd.Timestamp.now()
 st.subheader("キャッシュの無効化")
-st.write(f"現在時刻（{ttl}秒ごとに更新）:")
+st.write(f"現在時刻（{10}秒ごとに更新）:")
 st.write(get_current_time())
 
 
