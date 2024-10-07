@@ -50,3 +50,8 @@ df = pd.DataFrame(data)
 # データフレームの表⽰
 st.subheader('データフレームの表⽰')
 st.dataframe(df)
+
+# 表の表⽰
+st.subheader('表の表⽰')
+st.table(df)
+
