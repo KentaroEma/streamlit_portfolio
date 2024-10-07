@@ -214,7 +214,7 @@ st.write(f"⼤規模データセット読み込み時間: {end_time - start_time
 st.write(f"データセットの形状: {large_data.shape}")
 st.write(large_data.head())
 
-ttl = 1
+ttl = 10
 
 @st.cache_data(ttl=ttl)
 def get_current_time():
