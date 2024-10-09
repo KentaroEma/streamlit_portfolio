@@ -370,6 +370,90 @@ if uploaded_excel:
             st.plotly_chart(fig)
 
 
+st.header('レッスン13: カラムとコンテナによるレイアウト')
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.subheader("列1")
+    st.write("ここは1列⽬です。")
+    st.button("ボタン1", key="button1")
+with col2:
+    st.subheader("列2")
+    st.write("ここは2列⽬です。")
+    st.checkbox("チェックボックス", key="checkbox1")
+with col3:
+    st.subheader("列3")
+    st.write("ここは3列⽬です。")
+    st.radio("ラジオボタン", ["選択肢1", "選択肢2", "選択肢3"], key="radio1")
 
+col_left, col_right = st.columns([2, 1])
+with col_left:
+    st.subheader("左側（幅広）")
+    chart_data = pd.DataFrame(np.random.randn(20, 3), columns=["A", "B", "C"])
+    selected_column = st.selectbox("データを選択", ["A", "B", "C"], key="data_select")
+    st.line_chart(chart_data[selected_column])
+with col_right:
+    st.subheader("右側（幅狭）")
+    st.write(f"選択されたデータ: {selected_column}")
+    st.write(f"平均値: {chart_data[selected_column].mean():.2f}")
+    st.write(f"最⼤値: {chart_data[selected_column].max():.2f}")
+    st.write(f"最⼩値: {chart_data[selected_column].min():.2f}")
+
+with st.container():
+    st.subheader("データ分析セクション")
+    st.write("このコンテナ内にデータ分析関連の要素をグループ化します。")
+    data_container = st.container()
+
+    data = pd.DataFrame({
+    '名前': ['Alice', 'Bob', 'Charlie', 'David'],
+    '年齢': [25, 30, 35, 40],
+    '都市': ['東京', '⼤阪', '名古屋', '福岡']
+    })
+
+    data_container.dataframe(data)
+
+    analysis_type = st.radio("分析タイプ", ["平均年齢", "都市別⼈数"], key="analysis_type")
+
+    if analysis_type == "平均年齢":
+        data_container.write(f"平均年齢: {data['年齢'].mean():.1f}歳")
+    else:
+        data_container.write(data['都市'].value_counts())
+
+with st.container():
+    st.subheader("ネストされたレイアウト")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.write("左側のカラム")
+    with st.container():
+        st.write("左側のコンテナ")
+        slider_value = st.slider("値を選択", 0, 100, 50, key="nested_slider")
+        st.write(f"選択された値: {slider_value}")
+
+    with col2:
+        st.write("右側のカラム")
+        with st.container():
+            st.write("右側の上部コンテナ")
+            option = st.selectbox("オプションを選択", ["オプション1", "オプション2", "オプション3"], key="nested_select")
+            st.write(f"選択されたオプション: {option}")
+ 
+    with st.container():
+        st.write("右側の下部コンテナ")
+        if st.button("クリックしてください", key="nested_button"):
+            st.write("ボタンがクリックされました！")
+
+# st.header('レッスン14: サイドバーとフッター')
+# st.sidebar.title('サイドバー')
+# st.sidebar.write('ここにサイドバーのコンテンツを追加します。')
+# st.sidebar.checkbox('チェックボックス', key='sidebar_checkbox')
+# st.sidebar.slider('スライダー', 0, 100, 50, key='sidebar_slider')
+# st.sidebar.selectbox('セレクトボックス', ['選択肢1', '選択肢2', '選択肢3'], key='sidebar_select')
+# st.sidebar.button('ボタン', key='sidebar_button')
+
+# st.write('ここにメインコンテンツを追加します。')
+
+# st.footer('フッター: この部分にフッターのコンテンツを追加します。')
+
+# st.header('レッスン15: ページの設定')
 
 
