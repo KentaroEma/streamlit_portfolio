@@ -5,7 +5,6 @@ import numpy as np
 import time
 import io
 import openpyxl
-import tqdm
 
 
 
@@ -528,15 +527,35 @@ if st.button("確認ダイアログを表⽰"):
         st.write("操作を中⽌します。")
 
 if st.button("プログレスバーを表⽰"):
-    # progress_bar = st.progress(0)
-    for i in tqdm(range(100)):
+    progress_bar = st.progress(0)
+    for i in range(100):
         time.sleep(0.1)
-        # progress_bar.progress(i + 1)
+        progress_bar.progress(i + 1)
 
 if st.button("スピナーを表⽰"):
     with st.spinner("データを読み込んでいます..."):
         time.sleep(5)
         st.success("データの読み込みが完了しました。")
+
+# st.header('レッスン16: テーマのカスタマイズ')
+# st.write("これはデフォルトのテーマです。")
+# st.write("これはプライマリカラーのテキストです。")
+# st.write("これはセカンダリカラーのテキストです。")
+# st.write("これは背景カラーのテキストです。")
+# st.write("これはテキストカラーのテキストです。")
+# st.write("これはアクセントカラーのテキストです。")
+# st.write("これはリンクのテキストです。")
+# st.write("これはボタンのテキストです。")
+# st.write("これはアイコンのテキストです。")
+# st.write("これはアラートのテキストです。")
+# st.write("これはエラーメッセージのテキストです。")
+# st.write("これは成功メッセージのテキストです。")
+# st.write("これは情報メッセージのテキストです。")
+# st.write("これは警告メッセージのテキストです。")
+# st.write("これはマークダウンのテキストです。")
+# st.write("これはコードのテキストです。")
+# st.write("これはラテックスのテキストです。")
+# st.write("これはボックスのテキストです。")
 
 
 
