@@ -5,6 +5,7 @@ import numpy as np
 import time
 import io
 import openpyxl
+import tqdm
 
 
 
@@ -375,7 +376,8 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader("列1")
     st.write("ここは1列⽬です。")
-    st.button("ボタン1", key="button1")
+    if st.button("ボタン1", key="button1"):
+        st.write("ボタンがクリックされました！")
 with col2:
     st.subheader("列2")
     st.write("ここは2列⽬です。")
@@ -425,10 +427,10 @@ with st.container():
 
     with col1:
         st.write("左側のカラム")
-    with st.container():
-        st.write("左側のコンテナ")
-        slider_value = st.slider("値を選択", 0, 100, 50, key="nested_slider")
-        st.write(f"選択された値: {slider_value}")
+        with st.container():
+            st.write("左側のコンテナ")
+            slider_value = st.slider("値を選択", 0, 100, 50, key="nested_slider")
+            st.write(f"選択された値: {slider_value}")
 
     with col2:
         st.write("右側のカラム")
@@ -452,8 +454,90 @@ with st.container():
 
 # st.write('ここにメインコンテンツを追加します。')
 
-# st.footer('フッター: この部分にフッターのコンテンツを追加します。')
+st.header('レッスン14: エクスパンダーとサイドバーによるレイアウト')
+st.subheader("エクスパンダーの使⽤例")
+# 1年分のデータを⽣成
+sales_data = pd.DataFrame({
+    '⽇付': pd.date_range(start='2023-01-01', end='2023-12-31'),
+    '売上': np.random.randint(1000, 5000, 365),
+    '商品': np.random.choice(['A', 'B', 'C'], 365)
+    })
+with st.expander("データセットの詳細を表⽰"):
+    st.dataframe(sales_data)
+with st.expander("グラフを表⽰"):
+    fig = go.Figure(data=go.Scatter(x=sales_data['⽇付'], y=sales_data['売上'], mode='lines+markers'))
+    fig.update_layout(title='⽇別売上推移')
+    st.plotly_chart(fig)
+with st.expander("統計情報"):
+    st.write(f"総売上: {sales_data['売上'].sum():,}円")
+    st.write(f"平均売上: {sales_data['売上'].mean():.2f}円")
+    st.write(f"最⾼売上: {sales_data['売上'].max():,}円")
+    st.write(f"最低売上: {sales_data['売上'].min():,}円")
 
-# st.header('レッスン15: ページの設定')
+st.subheader("サイドバーの使⽤例")
+st.sidebar.title("データ分析ツール")
+analysis_option = st.sidebar.radio(
+    "分析オプション",
+    ("データ概要", "売上分析", "商品別分析")
+    )
+date_range = st.sidebar.date_input(
+    "⽇付範囲",
+    value=(sales_data['⽇付'].min().date(), sales_data['⽇付'].max().date())
+    )
+filtered_data = sales_data[(sales_data['⽇付'].dt.date >= date_range[0]) & (sales_data['⽇付'].dt.date <= date_range[1])]
+if filtered_data.empty:
+    st.sidebar.info("選択された⽇付範囲にデータがありません。別の範囲を選択してください。")
+else:
+    if analysis_option == "データ概要":
+        st.write("選択された分析オプション: データ概要")
+        st.dataframe(filtered_data)
+    elif analysis_option == "売上分析":
+        st.write("選択された分析オプション: 売上分析")
+        st.line_chart(filtered_data.set_index('⽇付')['売上'])
+    else:
+        st.write("選択された分析オプション: 商品別分析")
+        product_sales = filtered_data.groupby('商品')['売上'].sum().reset_index()
+        st.bar_chart(product_sales.set_index('商品'))
+
+st.subheader("⾼度なエクスパンダーの使⽤例")
+with st.expander("カスタム分析"):
+    selected_product = st.selectbox("分析する商品を選択", sales_data['商品'].unique())
+    product_data = filtered_data[filtered_data['商品'] == selected_product]
+
+    if product_data.empty:
+        st.info("選択された⽇付範囲と商品の組み合わせにデータがありません。")
+    else:
+        st.write(f"商品 {selected_product} の分析")
+        st.line_chart(product_data.set_index('⽇付')['売上'])
+
+        if st.checkbox("詳細統計を表⽰"):
+            st.write(product_data['売上'].describe())
+
+
+st.header('レッスン15: ダイアログとプログレスバー')
+
+if st.button("ダイアログを表⽰"):
+    st.write("ダイアログが表示されました！")
+    st.info("ダイアログメッセージ")
+
+if st.button("確認ダイアログを表⽰"):
+    result = st.confirm("操作を続けますか？")
+    if result:
+        st.write("続けて操作します。")
+    else:
+        st.write("操作を中⽌します。")
+
+if st.button("プログレスバーを表⽰"):
+    # progress_bar = st.progress(0)
+    for i in tqdm(range(100)):
+        time.sleep(0.1)
+        # progress_bar.progress(i + 1)
+
+if st.button("スピナーを表⽰"):
+    with st.spinner("データを読み込んでいます..."):
+        time.sleep(5)
+        st.success("データの読み込みが完了しました。")
+
+
 
 
