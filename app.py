@@ -571,14 +571,44 @@ def display_pdf(uploaded_file):
     if uploaded_file is not None:
         pdf_contents = uploaded_file.read()
         pdf_base64 = base64.b64encode(pdf_contents).decode('utf-8')
-        encoded_pdf = f'<embed src="data:application/pdf;base64,{pdf_base64}" width="800" height="600" type="application/pdf">'
-        st.markdown(encoded_pdf, unsafe_allow_html=True)
 
+        # JavaScriptで画面サイズを取得し、PDFの表示サイズを動的に設定
+        pdf_display_script = """
+        <script>
+        function adjustPdfSize() {
+            var width = window.innerWidth; // 画面の幅を100%使用
+            var height = window.innerHeight; // 画面の高さを100%使用
+            var embedTag = document.getElementById('pdf_viewer');
+            embedTag.width = width;
+            embedTag.height = height;
+        }
+        window.onload = adjustPdfSize;
+        window.onresize = adjustPdfSize;
+        </script>
+        """
+
+        # PDFを埋め込むためのHTMLタグ
+        encoded_pdf = f'<embed id="pdf_viewer" src="data:application/pdf;base64,{pdf_base64}" width="100%" height="800px" type="application/pdf">'
+
+        # JavaScriptとPDFの埋め込みを表示
+        st.markdown(pdf_display_script + encoded_pdf, unsafe_allow_html=True)
     else:
         st.write("No PDF file uploaded.")
-        st.write(pdf_contents, unsafe_allow_html=True)
 
 def main():
+    # CSSを使って全画面表示にする
+    st.markdown(
+        """
+        <style>
+        .css-18e3th9 {padding: 0;}   /* ヘッダーのパディングをゼロに */
+        .css-1d391kg {padding: 0;}   /* ページのパディングをゼロに */
+        .main .block-container {padding: 0;margin: 0;width: 100vw;height: 100vh;max-width: 80vw;}  /* メインコンテナの幅と高さを100%に */
+        iframe {position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; border: none;} /* iframeを全画面表示 */
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     file = upload_pdf_file()
 
     if file is not None:
