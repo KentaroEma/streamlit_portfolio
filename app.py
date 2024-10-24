@@ -3,9 +3,6 @@ import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
 import time
-import io
-import openpyxl
-
 
 
 st.title('StreamlitによるApp')
@@ -536,86 +533,5 @@ if st.button("スピナーを表⽰"):
     with st.spinner("データを読み込んでいます..."):
         time.sleep(5)
         st.success("データの読み込みが完了しました。")
-
-# st.header('レッスン16: テーマのカスタマイズ')
-# st.write("これはデフォルトのテーマです。")
-# st.write("これはプライマリカラーのテキストです。")
-# st.write("これはセカンダリカラーのテキストです。")
-# st.write("これは背景カラーのテキストです。")
-# st.write("これはテキストカラーのテキストです。")
-# st.write("これはアクセントカラーのテキストです。")
-# st.write("これはリンクのテキストです。")
-# st.write("これはボタンのテキストです。")
-# st.write("これはアイコンのテキストです。")
-# st.write("これはアラートのテキストです。")
-# st.write("これはエラーメッセージのテキストです。")
-# st.write("これは成功メッセージのテキストです。")
-# st.write("これは情報メッセージのテキストです。")
-# st.write("これは警告メッセージのテキストです。")
-# st.write("これはマークダウンのテキストです。")
-# st.write("これはコードのテキストです。")
-# st.write("これはラテックスのテキストです。")
-# st.write("これはボックスのテキストです。")
-
-import streamlit as st
-import base64
-import os
-
-def upload_pdf_file():
-    uploaded_file = st.file_uploader("Upload PDF file", type="pdf")
-    if uploaded_file is None:
-        st.write("Please upload a PDF file.")
-    return uploaded_file
-
-def display_pdf(uploaded_file):
-    if uploaded_file is not None:
-        pdf_contents = uploaded_file.read()
-        pdf_base64 = base64.b64encode(pdf_contents).decode('utf-8')
-
-        # JavaScriptで画面サイズを取得し、PDFの表示サイズを動的に設定
-        pdf_display_script = """
-        <script>
-        function adjustPdfSize() {
-            var width = window.innerWidth; // 画面の幅を100%使用
-            var height = window.innerHeight; // 画面の高さを100%使用
-            var embedTag = document.getElementById('pdf_viewer');
-            embedTag.width = width;
-            embedTag.height = height;
-        }
-        window.onload = adjustPdfSize;
-        window.onresize = adjustPdfSize;
-        </script>
-        """
-
-        # PDFを埋め込むためのHTMLタグ
-        encoded_pdf = f'<embed id="pdf_viewer" src="data:application/pdf;base64,{pdf_base64}" width="100%" height="800px" type="application/pdf">'
-
-        # JavaScriptとPDFの埋め込みを表示
-        st.markdown(pdf_display_script + encoded_pdf, unsafe_allow_html=True)
-    else:
-        st.write("No PDF file uploaded.")
-
-def main():
-    # CSSを使って全画面表示にする
-    st.markdown(
-        """
-        <style>
-        .css-18e3th9 {padding: 0;}   /* ヘッダーのパディングをゼロに */
-        .css-1d391kg {padding: 0;}   /* ページのパディングをゼロに */
-        .main .block-container {padding: 0;margin: 0;width: 100vw;height: 100vh;max-width: 80vw;}  /* メインコンテナの幅と高さを100%に */
-        iframe {position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; border: none;} /* iframeを全画面表示 */
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    file = upload_pdf_file()
-
-    if file is not None:
-        display_pdf(file)
-
-main()
-
-
 
 
